@@ -61,7 +61,14 @@ struct my_equal {
      *         to uppercase using the given locale.
      */
     bool operator()(charT ch1, charT ch2) {
-        return std::toupper(ch1, m_loc) == std::toupper(ch2, m_loc);
+        if (std::has_facet<std::ctype<charT>>(m_loc))
+        {
+            return std::toupper(ch1, m_loc) == std::toupper(ch2, m_loc);
+        }
+        else
+        {
+            return static_cast<charT>(std::toupper(static_cast<unsigned char>(ch1))) == static_cast<charT>(std::toupper(static_cast<unsigned char>(ch2)));
+        }
     }
 private:
     std::locale const & m_loc;
