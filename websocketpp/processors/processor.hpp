@@ -113,10 +113,10 @@ int get_websocket_version(request_type& r) {
         return 0;
     }
 
-    int version;
-    std::istringstream ss(r.get_header("Sec-WebSocket-Version"));
-
-    if ((ss >> version).fail()) {
+    int version = 0;
+    std::string version_header_str = r.get_header("Sec-WebSocket-Version");
+    version = utility::parse_int(version_header_str.c_str());
+    if (version == 0) {
         return -1;
     }
 
