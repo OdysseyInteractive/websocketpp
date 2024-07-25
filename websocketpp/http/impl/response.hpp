@@ -34,6 +34,7 @@
 #include <string>
 
 #include <websocketpp/http/parser.hpp>
+#include <websocketpp/utilities.hpp>
 
 namespace websocketpp {
 namespace http {
@@ -98,9 +99,8 @@ inline size_t response::consume(char const * buf, size_t len) {
                 // no content length found, read indefinitely
                 m_read = 0;
             } else {
-                std::istringstream ss(length);
-
-                if ((ss >> m_read).fail()) {
+                m_read = utility::parse_int(length.c_str());
+                if (m_read == 0) {
                     throw exception("Unable to parse Content-Length header",
                                     status_code::bad_request);
                 }
@@ -221,11 +221,10 @@ inline void response::process(std::string::iterator begin,
         throw exception("Invalid request line",status_code::bad_request);
     }
 
-    int code;
-
-    std::istringstream ss(std::string(cursor_start,cursor_end));
-
-    if ((ss >> code).fail()) {
+    int code = 0;
+    std::string code_str = std::string(cursor_start, cursor_end);
+    code = utility::parse_int(code_str.c_str());
+    if (code == 0) {
         throw exception("Unable to parse response code",status_code::bad_request);
     }
 

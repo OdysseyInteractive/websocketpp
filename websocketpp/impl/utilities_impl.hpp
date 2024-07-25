@@ -30,6 +30,7 @@
 
 #include <algorithm>
 #include <string>
+#include <cstdlib>
 
 namespace websocketpp {
 namespace utility {
@@ -79,6 +80,11 @@ inline std::string string_replace_all(std::string subject, std::string const &
          pos += replace.length();
     }
     return subject;
+}
+
+inline int parse_int(char const* str)
+{
+    return std::atoi(str);
 }
 
 } // namespace utility

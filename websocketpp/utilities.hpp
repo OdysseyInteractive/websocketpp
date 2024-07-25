@@ -172,6 +172,8 @@ std::string to_hex(uint8_t const * input, size_t length);
  */
 std::string to_hex(char const * input, size_t length);
 
+int parse_int(char const* str);
+
 } // namespace utility
 } // namespace websocketpp
 
